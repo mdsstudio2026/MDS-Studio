@@ -1,0 +1,182 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDS Studio2026 - Premium OTT Platform</title>
+    <!-- Connects the CSS Styling Matrix -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+</head>
+<body>
+
+    <!-- 1. AUTHENTICATION / LANDING PAGE -->
+    <div id="page-auth" class="page active-page">
+        <header class="auth-header">
+            <div class="logo neon-text-yellow">MDS Studio2026</div>
+            <button class="btn-sm-login" onclick="toggleAuthMode()">Login</button>
+        </header>
+        
+        <main class="auth-container">
+            <div class="auth-card">
+                <h1 id="auth-title">Sign Up</h1>
+                <p class="subtitle">Access unlimited Cartoons, Anime, and Movies</p>
+                
+                <!-- Social Auth -->
+                <button class="btn-social google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+                <button class="btn-social apple-btn"><i class="fab fa-apple"></i> Continue with Apple</button>
+                
+                <div class="divider"><span>OR</span></div>
+                
+                <!-- Registration Fields (JioHotstar style details) -->
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="reg-username" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Date of Birth</label>
+                            <input type="date" id="reg-dob" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Gender</label>
+                            <select id="reg-gender" required>
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label id="passcode-label">Set Signup Passcode</label>
+                        <input type="password" id="reg-passcode" placeholder="Enter 6-digit passcode" maxlength="6" required>
+                    </div>
+                    <button type="submit" class="btn-primary-neon" id="auth-submit-btn">Create Account</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- 2. LOADING SCREEN BUFFER -->
+    <div id="page-loading" class="page hidden">
+        <div class="loader-wrapper">
+            <div class="logo neon-text-yellow pulse">MDS Studio2026</div>
+            <div class="neon-spinner"></div>
+            <p class="loading-text">Configuring Premium Stream Pipeline...</p>
+        </div>
+    </div>
+
+    <!-- 3. MAIN OTT CONTENT SHELL (Home, Search, Cartoon, Anime, Profile) -->
+    <div id="page-app" class="page hidden">
+        <!-- Sidebar Navigation Menu -->
+        <nav class="sidebar">
+            <div class="logo-area neon-text-yellow">MDS 2026</div>
+            <ul class="nav-links">
+                <li class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i> <span>Home</span></li>
+                <li class="nav-item" onclick="switchTab('search')"><i class="fas fa-search"></i> <span>Search</span></li>
+                <li class="nav-item" onclick="switchTab('cartoon')"><i class="fas fa-child"></i> <span>Cartoons</span></li>
+                <li class="nav-item" onclick="switchTab('anime')"><i class="fas fa-dragon"></i> <span>Anime</span></li>
+                <li class="nav-item" onclick="switchTab('profile')"><i class="fas fa-user-cog"></i> <span>Profile Settings</span></li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="tel:8680051212" class="helpline-badge">
+                    <i class="fas fa-headset"></i> Help: 8680051212
+                </a>
+            </div>
+        </nav>
+
+        <!-- Dynamic Main Content Window -->
+        <main class="content-window">
+            
+            <!-- HOME VIEW -->
+            <section id="tab-home" class="tab-content active-tab">
+                <div class="hero-banner">
+                    <div class="hero-info">
+                        <span class="badge-neon">TRENDING #1</span>
+                        <h1>Cyber Attack: Genesis</h1>
+                        <p>Experience the definitive neon cyberpunk anime of 2026. Streaming exclusively now.</p>
+                        <button class="btn-primary-neon"><i class="fas fa-play"></i> Watch Now</button>
+                    </div>
+                </div>
+                
+                <h2 class="row-title">Recently Added Streams</h2>
+                <div class="video-grid" id="home-grid"></div>
+            </section>
+
+            <!-- SEARCH VIEW -->
+            <section id="tab-search" class="tab-content hidden">
+                <div class="search-header-box">
+                    <i class="fas fa-search search-bar-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search movies, anime, characters..." oninput="executeSearch()">
+                </div>
+                <h2 class="row-title">Search Results</h2>
+                <div class="video-grid" id="search-grid">
+                    <p class="empty-state">Start typing to search the catalog...</p>
+                </div>
+            </section>
+
+            <!-- CARTOON VIEW -->
+            <section id="tab-cartoon" class="tab-content hidden">
+                <div class="category-header cartoon-bg">
+                    <h1>Premium Cartoons</h1>
+                    <p>High-energy animations for kids and adults alike.</p>
+                </div>
+                <div class="video-grid" id="cartoon-grid"></div>
+            </section>
+
+            <!-- ANIME VIEW -->
+            <section id="tab-anime" class="tab-content hidden">
+                <div class="category-header anime-bg">
+                    <h1>Top Anime Series</h1>
+                    <p>Direct simulcasts and subbed masterpieces straight from Tokyo.</p>
+                </div>
+                <div class="video-grid" id="anime-grid"></div>
+            </section>
+
+            <!-- PROFILE MANAGEMENT VIEW -->
+            <section id="tab-profile" class="tab-content hidden">
+                <div class="profile-dashboard">
+                    <h2>Manage Profile</h2>
+                    
+                    <div class="profile-avatar-row">
+                        <div class="avatar-container">
+                            <img id="profile-display-img" src="https://unsplash.com" alt="Avatar">
+                            <label for="avatar-uploader" class="avatar-edit-overlay">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="avatar-uploader" accept="image/*" onchange="previewAvatar(event)">
+                        </div>
+                        <div>
+                            <h3 id="profile-display-name">User Studio</h3>
+                            <p class="neon-text-yellow text-sm">MDS Premium Tier Member</p>
+                        </div>
+                    </div>
+
+                    <form class="profile-form" onsubmit="saveProfileChanges(event)">
+                        <div class="input-group">
+                            <label>Change Name</label>
+                            <input type="text" id="profile-name-input" value="User Studio">
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="profile-phone-input" placeholder="Enter mobile number">
+                        </div>
+                        
+                        <div class="profile-action-buttons">
+                            <button type="submit" class="btn-primary-neon">Save Changes</button>
+                            <button type="button" class="btn-logout" onclick="logoutSession()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Connects the Functional JS Engine last so the elements exist before running scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
